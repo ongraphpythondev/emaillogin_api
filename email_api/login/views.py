@@ -5,6 +5,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
 from .serializers import UserSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 
 class UserCreate(generics.CreateAPIView):
     authentication_classes = ()
@@ -20,8 +24,10 @@ class UserCreate(generics.CreateAPIView):
 
 
 class Loginview(APIView):
+
     permission_classes = ()
-    def post(self, request, ):
+
+    def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
         user = authenticate(email=email, password=password)
@@ -33,3 +39,4 @@ class Loginview(APIView):
         user_data =UserSerializer(user_get).data
         user_data.update(token =token.key)
         return Response({"token": user_data})
+
